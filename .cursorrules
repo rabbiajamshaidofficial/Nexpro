@@ -1,0 +1,30 @@
+Act as a Senior Principal Product Designer & Lead Frontend Engineer. Refactor and upgrade this e-commerce web application from scratch into a high-end, clean, ultra-modern LIGHT MODE UI (similar to Apple/Minimalist Luxury Tech). Completely discard the dark theme.
+
+### Design System & Theme Directives
+- **Background**: Soft off-white / light slate (`#FAFAFA` / `bg-slate-50`).
+- **Cards & Surfaces**: Pure crisp white (`#FFFFFF`) with ultra-subtle borders (`border-slate-200/80`), rounded-2xl geometry, and smooth hover elevation shadows (`hover:shadow-xl transition-all duration-300`).
+- **Typography**: High-contrast dark typography (`text-slate-900`), muted slate secondary text (`text-slate-500`), clean sans-serif layout.
+- **Accents**: Neon Lime / Electric Emerald highlights (`#10B981` or `#D4FF00` accent badges) and deep slate call-to-action buttons (`bg-slate-900 text-white hover:bg-slate-800`).
+
+---
+
+### Core Requirements & Architecture
+
+1. **Firebase Authentication Setup**:
+   Create `src/firebase.js` using these exact credentials:
+   ```javascript
+   import { initializeApp } from "firebase/app";
+   import { getAuth } from "firebase/auth";
+
+   const firebaseConfig = {
+     apiKey: "AIzaSyC1W9xQtNlVbXbbJVFSfQM3Tpo36MEef7Q",
+     authDomain: "nexpro-aa168.firebaseapp.com",
+     projectId: "nexpro-aa168",
+     storageBucket: "nexpro-aa168.firebasestorage.app",
+     messagingSenderId: "501632481496",
+     appId: "1:501632481496:web:1df63d5a7c71973fbe3fad",
+     measurementId: "G-0J7SD3Z22Y"
+   };
+
+   const app = initializeApp(firebaseConfig);
+   export const auth = getAuth(app);

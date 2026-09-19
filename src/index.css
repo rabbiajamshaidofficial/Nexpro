@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Base layer: sets adaptive light/dark background & text on the root elements.
+  This is the single source of truth for page-level colors — no hardcoded
+  classes on <body> in index.html.
+*/
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-slate-900 antialiased overflow-x-hidden transition-colors duration-300;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  /* Adaptive background for dark mode */
+  html.dark body {
+    @apply bg-slate-950 text-white;
+  }
+}
