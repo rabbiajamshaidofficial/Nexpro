@@ -39,9 +39,9 @@ function CheckoutModal({ open, onClose, onSuccess }) {
     state: "",
     zipCode: "",
     paymentMethod: "card",
-    cardNumber: "•••• •••• •••• 4242",
-    cardExp: "12/28",
-    cardCvc: "888",
+    cardNumber: "",
+    cardExp: "",
+    cardCvc: "",
   });
 
   const shippingFee = subtotal >= freeShippingThreshold ? 0 : 50;
@@ -65,6 +65,12 @@ function CheckoutModal({ open, onClose, onSuccess }) {
     if (!formData.address.trim() || !formData.city.trim() || !formData.zipCode.trim()) {
       setError("Please fill in complete shipping address details.");
       return;
+    }
+    if (formData.paymentMethod === "card") {
+      if (!formData.cardNumber.trim() || !formData.cardExp.trim() || !formData.cardCvc.trim()) {
+        setError("Please fill in complete payment card details.");
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -184,7 +190,7 @@ function CheckoutModal({ open, onClose, onSuccess }) {
                         required
                         value={formData.fullName}
                         onChange={handleChange}
-                        placeholder="Deckard Shaw"
+                        placeholder=""
                         className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                       />
                     </label>
@@ -212,7 +218,7 @@ function CheckoutModal({ open, onClose, onSuccess }) {
                         required
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="+1 (555) 019-2834"
+                        placeholder=""
                         className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                       />
                     </label>
@@ -227,7 +233,7 @@ function CheckoutModal({ open, onClose, onSuccess }) {
                         required
                         value={formData.address}
                         onChange={handleChange}
-                        placeholder="742 Evergreen Sector, Level 04"
+                        placeholder=""
                         className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                       />
                     </label>
@@ -242,7 +248,7 @@ function CheckoutModal({ open, onClose, onSuccess }) {
                         required
                         value={formData.city}
                         onChange={handleChange}
-                        placeholder="Neo District"
+                        placeholder=""
                         className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                       />
                     </label>
@@ -257,7 +263,7 @@ function CheckoutModal({ open, onClose, onSuccess }) {
                           name="state"
                           value={formData.state}
                           onChange={handleChange}
-                          placeholder="CA"
+                          placeholder=""
                           className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                         />
                       </label>
@@ -271,7 +277,7 @@ function CheckoutModal({ open, onClose, onSuccess }) {
                           required
                           value={formData.zipCode}
                           onChange={handleChange}
-                          placeholder="90210"
+                          placeholder=""
                           className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                         />
                       </label>
@@ -311,29 +317,55 @@ function CheckoutModal({ open, onClose, onSuccess }) {
                   </div>
 
                   {formData.paymentMethod === "card" && (
-                    <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3 dark:border-slate-800 dark:bg-slate-800/40">
-                      <div className="grid gap-2 sm:grid-cols-3">
+                    <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
+                      <div className="grid gap-3 sm:grid-cols-3">
+                        <div className="sm:col-span-3">
+                          <label className="block">
+                            <span className="mb-1 block text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                              Card Number *
+                            </span>
+                            <input
+                              type="text"
+                              name="cardNumber"
+                              value={formData.cardNumber}
+                              onChange={handleChange}
+                              placeholder="4532 •••• •••• 8888"
+                              maxLength={19}
+                              className="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 font-mono text-xs text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
+                            />
+                          </label>
+                        </div>
                         <div className="sm:col-span-2">
-                          <span className="block text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                            Simulated Card Number
-                          </span>
-                          <input
-                            type="text"
-                            readOnly
-                            value={formData.cardNumber}
-                            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 font-mono text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                          />
+                          <label className="block">
+                            <span className="mb-1 block text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                              Expiration Date *
+                            </span>
+                            <input
+                              type="text"
+                              name="cardExp"
+                              value={formData.cardExp}
+                              onChange={handleChange}
+                              placeholder="MM/YY"
+                              maxLength={5}
+                              className="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 font-mono text-xs text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
+                            />
+                          </label>
                         </div>
                         <div>
-                          <span className="block text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                            Expires / CVC
-                          </span>
-                          <input
-                            type="text"
-                            readOnly
-                            value={`${formData.cardExp} • ${formData.cardCvc}`}
-                            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 font-mono text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                          />
+                          <label className="block">
+                            <span className="mb-1 block text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                              CVC *
+                            </span>
+                            <input
+                              type="text"
+                              name="cardCvc"
+                              value={formData.cardCvc}
+                              onChange={handleChange}
+                              placeholder="123"
+                              maxLength={4}
+                              className="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 font-mono text-xs text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
+                            />
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -419,4 +451,3 @@ function CheckoutModal({ open, onClose, onSuccess }) {
 }
 
 export default CheckoutModal;
-
